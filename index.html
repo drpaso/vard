@@ -102,27 +102,45 @@
     </div>
 
     <div style="text-align: center;">
-        <a href="/contact.vcf" class="download-btn" download="John-Doe.vcf">
+        <a href="/contact.vcf" class="download-btn" download="contact.vcf">
             📱 Download vCard
         </a>
     </div>
 
     <div class="qr-section">
         <h3>Quick Add to Contacts</h3>
-        <div class="qr-placeholder">
-            QR Code<br>
-            (Scan with phone)
-        </div>
+        <div id="qrcode" class="qr-placeholder"></div>
         <p style="font-size: 0.9rem; color: #7f8c8d;">
             Scan this QR code with your phone to quickly add this contact
         </p>
     </div>
 
+    <script src="https://unpkg.com/qrcode@1.5.3/build/qrcode.min.js"></script>
     <script>
-        // Generate QR code for the vCard
-        // You can use a QR code library like qrcode.js
-        // For now, this is a placeholder
-        console.log('QR code would link to: ' + window.location.origin + '/contact.vcf');
+        (function generateQr() {
+            try {
+                var vcardUrl = window.location.origin + '/contact.vcf';
+                var container = document.getElementById('qrcode');
+                // Clear placeholder text
+                container.innerHTML = '';
+                // Render QR onto a canvas and append
+                var canvas = document.createElement('canvas');
+                canvas.width = 150;
+                canvas.height = 150;
+                QRCode.toCanvas(canvas, vcardUrl, { width: 150, margin: 1 }, function (error) {
+                    if (error) {
+                        console.error(error);
+                        container.textContent = 'QR failed to load';
+                        return;
+                    }
+                    container.appendChild(canvas);
+                });
+            } catch (e) {
+                console.error(e);
+                var fallback = document.getElementById('qrcode');
+                if (fallback) fallback.textContent = 'QR failed to load';
+            }
+        })();
     </script>
 </body>
 </html>
