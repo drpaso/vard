@@ -109,55 +109,13 @@
 
     <div class="qr-section">
         <h3>Quick Add to Contacts</h3>
-        <div id="qrcode" class="qr-placeholder"></div>
+        <div class="qr-placeholder" style="background: none;">
+            <img src="/qr.png" alt="QR code for vCard" width="150" height="150" style="display:block;margin:0 auto;border-radius:8px;" />
+        </div>
         <p style="font-size: 0.9rem; color: #7f8c8d;">
             Scan this QR code with your phone to quickly add this contact
         </p>
     </div>
 
-    <script src="https://unpkg.com/qrcode@1.5.3/build/qrcode.min.js"></script>
-    <script>
-        (function generateQr() {
-            try {
-                var container = document.getElementById('qrcode');
-                if (!container) return;
-
-                // Resolve URL robustly across file://, subpaths, and prod domains
-                var vcardUrl;
-                try {
-                    vcardUrl = new URL('contact.vcf', window.location.href).href;
-                } catch (_) {
-                    vcardUrl = 'contact.vcf';
-                }
-
-                // Clear placeholder text
-                container.innerHTML = '';
-
-                // Guard if library failed to load
-                if (typeof QRCode === 'undefined' || !QRCode || !QRCode.toCanvas) {
-                    console.error('QRCode library not available');
-                    container.textContent = 'QR failed to load';
-                    return;
-                }
-
-                // Render QR onto a canvas and append
-                var canvas = document.createElement('canvas');
-                canvas.width = 150;
-                canvas.height = 150;
-                QRCode.toCanvas(canvas, vcardUrl, { width: 150, margin: 1 }, function (error) {
-                    if (error) {
-                        console.error(error);
-                        container.textContent = 'QR failed to load';
-                        return;
-                    }
-                    container.appendChild(canvas);
-                });
-            } catch (e) {
-                console.error(e);
-                var fallback = document.getElementById('qrcode');
-                if (fallback) fallback.textContent = 'QR failed to load';
-            }
-        })();
-    </script>
 </body>
 </html>
