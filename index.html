@@ -119,10 +119,27 @@
     <script>
         (function generateQr() {
             try {
-                var vcardUrl = window.location.origin + '/contact.vcf';
                 var container = document.getElementById('qrcode');
+                if (!container) return;
+
+                // Resolve URL robustly across file://, subpaths, and prod domains
+                var vcardUrl;
+                try {
+                    vcardUrl = new URL('contact.vcf', window.location.href).href;
+                } catch (_) {
+                    vcardUrl = 'contact.vcf';
+                }
+
                 // Clear placeholder text
                 container.innerHTML = '';
+
+                // Guard if library failed to load
+                if (typeof QRCode === 'undefined' || !QRCode || !QRCode.toCanvas) {
+                    console.error('QRCode library not available');
+                    container.textContent = 'QR failed to load';
+                    return;
+                }
+
                 // Render QR onto a canvas and append
                 var canvas = document.createElement('canvas');
                 canvas.width = 150;
