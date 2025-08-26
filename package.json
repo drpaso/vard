@@ -1,0 +1,14 @@
+{
+  "name": "vcard-site",
+  "version": "1.0.0",
+  "description": "Personal vCard website",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'Static site - no build needed'",
+    "deploy": "vercel --prod"
+  },
+  "keywords": ["vcard", "contact", "personal"],
+  "author": "John Doe",
+  "license": "MIT"
+}
